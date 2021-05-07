@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "version": "0.0.1",
+  "name": "Debugger Timeout",
+  "description": "The best extension to set a timed debugger to web Inspect hard to grab elements",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Debugger Timeout"
+  },
+  "permissions": ["storage", "scripting"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
