@@ -1,6 +1,6 @@
 const HIDDEN = "hidden";
 const DISABLED = "disabled";
-const RELOAD = "reload";
+const RERUN = "rerun";
 const DONE = "done";
 
 const rootStyles = document.documentElement.style;
@@ -10,14 +10,18 @@ const timeControls = document.querySelectorAll(".time-controls");
 const previewTime = document.querySelector("#time-preview");
 const secondsTimer = document.querySelector("#seconds-timer");
 const secondsTextTime = document.querySelector("#seconds");
-const reloadSecondsTextTime = document.querySelector("#reload");
+const reloadSecondsTextTime = document.querySelector("#rerun");
 const submitBtn = document.querySelector("#submit");
 const resetBtn = document.querySelector("#reset");
 const progressCircle = document.querySelector(".ko-progress-circle");
 
+/**
+ * Event listeners
+ */
+
 //get storage and update popup state
 chrome.storage.sync.get("options", function ({ options }) {
-  updateElements({
+  setGlobals({
     ...options,
     submitBtnEnabled: true,
     resetBtnEnabled: Boolean(options?.time),
@@ -30,47 +34,97 @@ document
   .querySelector(".form")
   .addEventListener("submit", (e) => e.preventDefault());
 
-function timeValidation(value) {
-  if (!value) {
-    inputTime.value = 1;
-  }
-
-  return Boolean(value);
+function updateSecondsTextTime(time) {
+  secondsTextTime.innerText = time;
 }
 
+timeControls.forEach((control) => {
+  control.addEventListener("click", () => {
+    if (control.classList.contains("step-up")) {
+      inputTime.stepUp();
+    } else if (control.classList.contains("step-down")) {
+      inputTime.stepDown();
+    }
+  });
+});
+
+submitBtn.addEventListener("click", runDebugger);
+
+reloadSecondsTextTime.addEventListener("click", runDebugger);
+
+resetBtn.addEventListener("click", () => {
+  chrome.storage.sync.clear(() => {
+    chrome.runtime.sendMessage({ message: "reset" });
+  });
+  document.location.reload();
+});
+
+/**
+ * utils
+ */
+
+/**
+ * convertToMilliseconds
+ * @param {string} value
+ */
 function convertToMilliseconds(value) {
   return parseInt(value) * 1000;
 }
 
+/**
+ * convertToSeconds
+ * @param {string} value
+ */
 function convertToSeconds(value) {
   return parseInt(value) / 1000;
 }
 
-function startCountdown(seconds) {
-  let counter = seconds;
+/**
+ * setGlobalsAfterCountdown
+ * @param {number} initialTime
+ */
+function setGlobalsAfterCountdown(initialTime) {
+  secondsTextTime.innerText = initialTime;
+  secondsTimer.classList.add(RERUN);
+  reloadSecondsTextTime.classList.remove(HIDDEN);
+  resetBtn.classList.remove(HIDDEN);
+  toggleEnableButton(resetBtn, true);
+  toggleEnableButton(submitBtn, true);
+  setProgressCircle(false);
+  chrome.action.setBadgeText({ text: `${initialTime}s` });
+}
+
+/**
+ * startCountdown
+ * @param {number} initialTime
+ */
+function startCountdown(initialTime) {
+  let counter = initialTime;
 
   const interval = setInterval(() => {
     counter--;
     secondsTextTime.innerText = counter;
+    chrome.action.setBadgeText({ text: `${counter}s` });
 
     if (counter < 0) {
       clearInterval(interval);
-      secondsTextTime.innerText = seconds;
-      secondsTimer.classList.add(RELOAD);
-      reloadSecondsTextTime.classList.remove(HIDDEN);
-      resetBtn.classList.remove(HIDDEN);
-      toggleEnableButton(resetBtn, true);
-      toggleEnableButton(submitBtn, true);
-      setProgressCircle(false);
+      setGlobalsAfterCountdown(initialTime);
     }
   }, 1000);
 }
 
-function reloadTimePreview() {
-  secondsTimer.classList.remove(RELOAD);
+/**
+ * hideRerun - hides the rerun element
+ */
+function hideRerun() {
+  secondsTimer.classList.remove(RERUN);
   reloadSecondsTextTime.classList.add(HIDDEN);
 }
 
+/**
+ * setProgressCircle
+ * @param {boolean} isActive
+ */
 function setProgressCircle(isActive) {
   progressCircle.setAttribute("data-progress", isActive ? 100 : 0);
 
@@ -81,6 +135,13 @@ function setProgressCircle(isActive) {
   }
 }
 
+/**
+ * runDebugger
+ * sets options,
+ * calls to chrome's API,
+ * calls to `hideRerun` & `setGlobals` & `setProgressCircle` & `startCountdown`
+ *
+ */
 function runDebugger() {
   const time = convertToMilliseconds(inputTime.value);
 
@@ -94,26 +155,31 @@ function runDebugger() {
   chrome.storage.sync.set({ options });
   chrome.runtime.sendMessage({ message: "runDebugger" });
 
+  hideRerun();
+  setGlobals(options);
   setProgressCircle(true);
-  reloadTimePreview();
-  updateElements(options);
   startCountdown(parseInt(inputTime.value));
 }
 
+/**
+ * toggleEnableButton
+ * @param {HTMLButtonElement} button
+ * @param {boolean} isEnable
+ */
 function toggleEnableButton(button, isEnable) {
-  if (isEnable) {
-    button.classList.remove(DISABLED);
-  } else {
-    button.classList.add(DISABLED);
-  }
+  isEnable ? button.classList.remove(DISABLED) : button.classList.add(DISABLED);
 }
 
-function updateElements({
-  time,
-  resetBtnEnabled,
-  submitBtnEnabled,
-  showReset,
-}) {
+/**
+ *
+ * @param {{
+ *  time?: number,
+ *  resetBtnEnabled: boolean,
+ *  submitBtnEnabled: boolean,
+ *  showReset: boolean
+ * }} object
+ */
+function setGlobals({ time, resetBtnEnabled, submitBtnEnabled, showReset }) {
   // chrome
   chrome.action.setBadgeBackgroundColor({ color: "#023047" });
   chrome.action.setBadgeText(
@@ -129,6 +195,7 @@ function updateElements({
     inputTime.innerHTML = convertToSeconds(time);
     inputTime.value = convertToSeconds(time);
   }
+
   toggleEnableButton(resetBtn, resetBtnEnabled);
   toggleEnableButton(submitBtn, submitBtnEnabled);
 
@@ -138,28 +205,3 @@ function updateElements({
     time ? `${convertToSeconds(time)}s` : "1s",
   );
 }
-
-function updateSecondsTextTime(time) {
-  secondsTextTime.innerText = time;
-}
-
-reloadSecondsTextTime.addEventListener("click", runDebugger);
-
-timeControls.forEach((control) => {
-  control.addEventListener("click", () => {
-    if (control.classList.contains("step-up")) {
-      inputTime.stepUp();
-    } else if (control.classList.contains("step-down")) {
-      inputTime.stepDown();
-    }
-  });
-});
-
-submitBtn.addEventListener("click", runDebugger);
-
-resetBtn.addEventListener("click", () => {
-  chrome.storage.sync.clear(() => {
-    chrome.runtime.sendMessage({ message: "reset" });
-  });
-  document.location.reload();
-});

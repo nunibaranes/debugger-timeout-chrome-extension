@@ -137,11 +137,12 @@ body {
   padding-right: 10px;
 }
 
-.time-preview .seconds.reload {
+.time-preview .seconds.rerun {
   cursor: pointer;
   font-size: 52px;
   margin-bottom: 15px;
-  padding-top: 2px;
+  padding-top: 18px;
+  color: var(--white);
 }
 
 .seconds-timer {
@@ -151,13 +152,13 @@ body {
   align-items: center;
 }
 
-.seconds-timer.reload {
+.seconds-timer.rerun {
   flex-direction: row;
   justify-content: center;
   align-items: center;
 }
 
-.time-preview .seconds-timer.reload .seconds {
+.time-preview .seconds-timer.rerun .seconds {
   font-size: 20px;
   margin-top: 5px;
 }
