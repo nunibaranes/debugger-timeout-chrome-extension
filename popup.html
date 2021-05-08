@@ -5,6 +5,10 @@
     <link rel="stylesheet" href="./styles/popup-styles.css" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
       href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap"
       rel="stylesheet"
     />
@@ -44,7 +48,13 @@
               </div>
             </div>
             <div id="time-preview" class="time-preview hidden">
-              <span id="reload" class="seconds reload hidden">&#10227;</span>
+              <span
+                id="reload"
+                class="seconds reload hidden"
+                title="Run debugger again"
+              >
+                <i class="fa fa-refresh"></i>
+              </span>
               <div class="seconds-timer" id="seconds-timer">
                 <span id="seconds" class="seconds"></span> seconds
               </div>

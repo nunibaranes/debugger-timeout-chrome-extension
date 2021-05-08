@@ -90,6 +90,8 @@ body {
 .time-preview .seconds.reload {
   cursor: pointer;
   font-size: 52px;
+  margin-bottom: 15px;
+  padding-top: 2px;
 }
 
 .time {
