@@ -1,7 +1,9 @@
 const HIDDEN = "hidden";
 const DISABLED = "disabled";
 const RELOAD = "reload";
+const DONE = "done";
 
+const rootStyles = document.documentElement.style;
 const timeFormField = document.querySelector("#time-form-field");
 const inputTime = document.querySelector("#time-field");
 const timeControls = document.querySelectorAll(".time-controls");
@@ -11,6 +13,7 @@ const secondsTextTime = document.querySelector("#seconds");
 const reloadSecondsTextTime = document.querySelector("#reload");
 const submitBtn = document.querySelector("#submit");
 const resetBtn = document.querySelector("#reset");
+const progressCircle = document.querySelector(".ko-progress-circle");
 
 //get storage and update popup state
 chrome.storage.sync.get("options", function ({ options }) {
@@ -58,6 +61,7 @@ function startCountdown(seconds) {
       resetBtn.classList.remove(HIDDEN);
       toggleEnableButton(resetBtn, true);
       toggleEnableButton(submitBtn, true);
+      setProgressCircle(false);
     }
   }, 1000);
 }
@@ -65,6 +69,16 @@ function startCountdown(seconds) {
 function reloadTimePreview() {
   secondsTimer.classList.remove(RELOAD);
   reloadSecondsTextTime.classList.add(HIDDEN);
+}
+
+function setProgressCircle(isActive) {
+  progressCircle.setAttribute("data-progress", isActive ? 100 : 0);
+
+  // prevents animation when `data-progress` sets to 0.
+  if (!isActive) {
+    progressCircle.classList.add(DONE);
+    setTimeout(() => progressCircle.classList.remove(DONE), 0);
+  }
 }
 
 function runDebugger() {
@@ -80,6 +94,7 @@ function runDebugger() {
   chrome.storage.sync.set({ options });
   chrome.runtime.sendMessage({ message: "runDebugger" });
 
+  setProgressCircle(true);
   reloadTimePreview();
   updateElements(options);
   startCountdown(parseInt(inputTime.value));
@@ -116,6 +131,12 @@ function updateElements({
   }
   toggleEnableButton(resetBtn, resetBtnEnabled);
   toggleEnableButton(submitBtn, submitBtnEnabled);
+
+  // css variables
+  rootStyles.setProperty(
+    "--progress-bar-transition-length",
+    time ? `${convertToSeconds(time)}s` : "1s",
+  );
 }
 
 function updateSecondsTextTime(time) {

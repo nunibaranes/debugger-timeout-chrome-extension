@@ -53,48 +53,10 @@ body {
   margin-bottom: 10px;
 }
 
-.time-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.input {
-  all: unset;
-  width: 150px;
-  height: 25px;
-  margin-top: 5px;
-  border: 1px solid lightcoral;
-  border-radius: 15px;
-  padding: 3px 8px;
-  text-align: center;
-}
-
-.button.text.time-controls {
-  font-size: 40px;
-  font-weight: 100;
-}
-
-.seconds {
-  color: var(--white);
-  font-weight: bold;
-  margin-top: 15px;
-  white-space: nowrap;
-  overflow: hidden;
-  color: var(--orangeLight);
-  text-overflow: ellipsis;
-  width: 100px;
-  padding-right: 10px;
-}
-
-.time-preview .seconds.reload {
-  cursor: pointer;
-  font-size: 52px;
-  margin-bottom: 15px;
-  padding-top: 2px;
-}
+/* time */
 
 .time {
+  position: relative;
   height: 200px;
   width: 200px;
   background-color: var(--orangeDark);
@@ -107,6 +69,18 @@ body {
   text-align: center;
   padding-top: 25px;
   margin: 20px auto;
+  overflow: hidden;
+}
+
+.time-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button.text.time-controls {
+  font-size: 40px;
+  font-weight: 100;
 }
 
 .time-form-field {
@@ -115,6 +89,7 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
+  z-index: 1;
 }
 
 .time-field {
@@ -134,8 +109,10 @@ body {
 .time-field-label {
   color: var(--blueVeryDark);
   width: 120px;
-  margin-bottom: 10px;
+  margin: 5px auto;
 }
+
+/* time-preview */
 
 .time-preview {
   font-size: 20px;
@@ -145,6 +122,26 @@ body {
   align-items: center;
   margin-top: 22px;
   width: 100%;
+  z-index: 1;
+}
+
+.seconds {
+  color: var(--white);
+  font-weight: bold;
+  margin-top: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  color: var(--orangeLight);
+  text-overflow: ellipsis;
+  width: 100px;
+  padding-right: 10px;
+}
+
+.time-preview .seconds.reload {
+  cursor: pointer;
+  font-size: 52px;
+  margin-bottom: 15px;
+  padding-top: 2px;
 }
 
 .seconds-timer {
@@ -172,6 +169,7 @@ body {
   width: 100%;
 }
 
+/* actions */
 .actions {
   display: flex;
   align-items: center;
