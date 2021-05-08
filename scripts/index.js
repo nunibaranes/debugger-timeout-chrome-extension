@@ -1,4 +1,7 @@
 const HIDDEN = "hidden";
+const DISABLED = "disabled";
+const RELOAD = "reload";
+
 const timeFormField = document.querySelector("#time-form-field");
 const inputTime = document.querySelector("#time-field");
 const timeControls = document.querySelectorAll(".time-controls");
@@ -11,7 +14,12 @@ const resetBtn = document.querySelector("#reset");
 
 //get storage and update popup state
 chrome.storage.sync.get("options", function ({ options }) {
-  updateElements(options, true);
+  updateElements({
+    ...options,
+    submitBtnEnabled: true,
+    resetBtnEnabled: Boolean(options?.time),
+    showReset: Boolean(options?.time),
+  });
 });
 
 //prevent form submission
@@ -45,22 +53,29 @@ function startCountdown(seconds) {
     if (counter < 0) {
       clearInterval(interval);
       secondsTextTime.innerText = seconds;
-      secondsTimer.classList.add("reload");
+      secondsTimer.classList.add(RELOAD);
       reloadSecondsTextTime.classList.remove(HIDDEN);
-      enableResetButton();
+      resetBtn.classList.remove(HIDDEN);
+      toggleEnableButton(resetBtn, true);
+      toggleEnableButton(submitBtn, true);
     }
   }, 1000);
 }
 
 function reloadTimePreview() {
-  secondsTimer.classList.remove("reload");
+  secondsTimer.classList.remove(RELOAD);
   reloadSecondsTextTime.classList.add(HIDDEN);
 }
 
 function runDebugger() {
   const time = convertToMilliseconds(inputTime.value);
 
-  const options = { time };
+  const options = {
+    time,
+    submitBtnEnabled: false,
+    resetBtnEnabled: false,
+    showReset: false,
+  };
 
   chrome.storage.sync.set({ options });
   chrome.runtime.sendMessage({ message: "runDebugger" });
@@ -70,23 +85,37 @@ function runDebugger() {
   startCountdown(parseInt(inputTime.value));
 }
 
-function enableResetButton() {
-  resetBtn.classList.remove("disabled");
+function toggleEnableButton(button, isEnable) {
+  if (isEnable) {
+    button.classList.remove(DISABLED);
+  } else {
+    button.classList.add(DISABLED);
+  }
 }
 
-function updateElements(options, shouldEnableResetButton) {
-  if (options) {
-    resetBtn.classList.remove(HIDDEN);
-    submitBtn.classList.add(HIDDEN);
+function updateElements({
+  time,
+  resetBtnEnabled,
+  submitBtnEnabled,
+  showReset,
+}) {
+  // chrome
+  chrome.action.setBadgeBackgroundColor({ color: "#023047" });
+  chrome.action.setBadgeText(
+    time ? { text: `${convertToSeconds(time)}s` } : { text: "" },
+  );
+
+  // popup's
+  if (time) {
+    showReset && resetBtn.classList.remove(HIDDEN);
     timeFormField.classList.add(HIDDEN);
     previewTime.classList.remove(HIDDEN);
-    updateSecondsTextTime(convertToSeconds(options.time));
-    inputTime.innerHTML = convertToSeconds(options.time);
-
-    if (shouldEnableResetButton) {
-      enableResetButton();
-    }
+    updateSecondsTextTime(convertToSeconds(time));
+    inputTime.innerHTML = convertToSeconds(time);
+    inputTime.value = convertToSeconds(time);
   }
+  toggleEnableButton(resetBtn, resetBtnEnabled);
+  toggleEnableButton(submitBtn, submitBtnEnabled);
 }
 
 function updateSecondsTextTime(time) {
