@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="./styles/popup-styles.css" />
+    <link rel="stylesheet" href="./styles/progress-bar-styles.css" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       rel="stylesheet"
@@ -29,6 +30,22 @@
       <main class="main">
         <form class="form">
           <div class="time">
+            <!--ko-progress-circle reference from: https://codepen.io/eZ0/pen/eZXNzd-->
+            <div class="ko-progress-circle" data-progress="0">
+              <div class="ko-circle">
+                <div class="full ko-progress-circle__slice">
+                  <div class="ko-progress-circle__fill"></div>
+                </div>
+                <div class="ko-progress-circle__slice">
+                  <div class="ko-progress-circle__fill"></div>
+                  <div
+                    class="ko-progress-circle__fill ko-progress-circle__bar"
+                  ></div>
+                </div>
+              </div>
+              <div class="ko-progress-circle__overlay"></div>
+            </div>
+            <!--ko-progress-circle reference from: https://codepen.io/eZ0/pen/eZXNzd-->
             <div id="time-form-field" class="time-form-field">
               <label class="time-field-label" for="time-field"
                 >Choose a number between 1-10:</label
@@ -48,13 +65,13 @@
               </div>
             </div>
             <div id="time-preview" class="time-preview hidden">
-              <span
-                id="reload"
-                class="seconds reload hidden"
+              <button
+                id="rerun"
+                class="button text seconds rerun hidden"
                 title="Run debugger again"
               >
                 <i class="fa fa-refresh"></i>
-              </span>
+              </button>
               <div class="seconds-timer" id="seconds-timer">
                 <span id="seconds" class="seconds"></span> seconds
               </div>
