@@ -1,5 +1,6 @@
 const HIDDEN = "hidden";
 const DISABLED = "disabled";
+const RELOAD = "reload";
 
 const timeFormField = document.querySelector("#time-form-field");
 const inputTime = document.querySelector("#time-field");
@@ -52,7 +53,7 @@ function startCountdown(seconds) {
     if (counter < 0) {
       clearInterval(interval);
       secondsTextTime.innerText = seconds;
-      secondsTimer.classList.add("reload");
+      secondsTimer.classList.add(RELOAD);
       reloadSecondsTextTime.classList.remove(HIDDEN);
       resetBtn.classList.remove(HIDDEN);
       toggleEnableButton(resetBtn, true);
@@ -62,7 +63,7 @@ function startCountdown(seconds) {
 }
 
 function reloadTimePreview() {
-  secondsTimer.classList.remove("reload");
+  secondsTimer.classList.remove(RELOAD);
   reloadSecondsTextTime.classList.add(HIDDEN);
 }
 
