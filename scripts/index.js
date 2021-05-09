@@ -91,7 +91,6 @@ function setGlobalsAfterCountdown(initialTime) {
   toggleEnableButton(resetBtn, true);
   toggleEnableButton(submitBtn, true);
   setProgressCircle(false);
-  chrome.action.setBadgeText({ text: `${initialTime}s` });
 }
 
 /**
@@ -104,7 +103,6 @@ function startCountdown(initialTime) {
   const interval = setInterval(() => {
     counter--;
     secondsTextTime.innerText = counter;
-    chrome.action.setBadgeText({ text: `${counter}s` });
 
     if (counter < 0) {
       clearInterval(interval);
