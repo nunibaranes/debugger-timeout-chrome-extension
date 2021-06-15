@@ -2,6 +2,7 @@ const HIDDEN = "hidden";
 const DISABLED = "disabled";
 const RERUN = "rerun";
 const DONE = "done";
+const ACTIVE = "active";
 
 const rootStyles = document.documentElement.style;
 const timeFormField = document.querySelector("#time-form-field");
@@ -13,7 +14,7 @@ const secondsTextTime = document.querySelector("#seconds");
 const reloadSecondsTextTime = document.querySelector("#rerun");
 const submitBtn = document.querySelector("#submit");
 const resetBtn = document.querySelector("#reset");
-const progressCircle = document.querySelector(".ko-progress-circle");
+const progressCircle = document.querySelector("#circle-progress");
 
 /**
  * Event listeners
@@ -30,9 +31,7 @@ chrome.storage.sync.get("options", function ({ options }) {
 });
 
 //prevent form submission
-document
-  .querySelector(".form")
-  .addEventListener("submit", (e) => e.preventDefault());
+document.querySelector(".form").addEventListener("submit", (e) => e.preventDefault());
 
 function updateSecondsTextTime(time) {
   secondsTextTime.innerText = time;
@@ -123,11 +122,12 @@ function hideRerun() {
  * setProgressCircle
  * @param {boolean} isActive
  */
-function setProgressCircle(isActive) {
-  progressCircle.setAttribute("data-progress", isActive ? 100 : 0);
-
+function setProgressCircle(isActive, countdown) {
   // prevents animation when `data-progress` sets to 0.
-  if (!isActive) {
+  if (isActive) {
+    progressCircle.classList.add(ACTIVE);
+  } else {
+    progressCircle.classList.remove(ACTIVE);
     progressCircle.classList.add(DONE);
     setTimeout(() => progressCircle.classList.remove(DONE), 0);
   }
@@ -155,7 +155,7 @@ function runDebugger() {
 
   hideRerun();
   setGlobals(options);
-  setProgressCircle(true);
+  setProgressCircle(true, parseInt(inputTime.value));
   startCountdown(parseInt(inputTime.value));
 }
 
@@ -180,9 +180,7 @@ function toggleEnableButton(button, isEnable) {
 function setGlobals({ time, resetBtnEnabled, submitBtnEnabled, showReset }) {
   // chrome
   chrome.action.setBadgeBackgroundColor({ color: "#023047" });
-  chrome.action.setBadgeText(
-    time ? { text: `${convertToSeconds(time)}s` } : { text: "" },
-  );
+  chrome.action.setBadgeText(time ? { text: `${convertToSeconds(time)}s` } : { text: "" });
 
   // popup's
   if (time) {
@@ -198,8 +196,5 @@ function setGlobals({ time, resetBtnEnabled, submitBtnEnabled, showReset }) {
   toggleEnableButton(submitBtn, submitBtnEnabled);
 
   // css variables
-  rootStyles.setProperty(
-    "--progress-bar-transition-length",
-    time ? `${convertToSeconds(time)}s` : "1s",
-  );
+  rootStyles.setProperty("--progress-bar-transition-length", time ? `${convertToSeconds(time)}s` : "1s");
 }

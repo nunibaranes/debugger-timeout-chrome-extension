@@ -8,6 +8,7 @@
   --orangeDark: #fb8500;
   --HeadingFont: "Fjalla One", sans-serif;
   --textFont: "Roboto", sans-serif;
+  --progress-bar-transition-length: 1s;
 }
 
 * {
@@ -70,6 +71,22 @@ body {
   padding-top: 25px;
   margin: 20px auto;
   overflow: hidden;
+}
+
+#circle-progress {
+  color: var(--orangeLight);
+  position: absolute;
+  top: 0;
+}
+
+#circle-progress .circle {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 0;
+  transform: translate(0%, 100%) rotate(-90deg);
+}
+
+#circle-progress.active .circle {
+  animation: animateLine var(--progress-bar-transition-length) linear both;
 }
 
 .time-controls {
@@ -229,4 +246,22 @@ body {
 
 a {
   color: var(--blueDark);
+}
+
+@keyframes animateLine {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 1000;
+  }
+}
+
+@keyframes animateLineReverse {
+  0% {
+    stroke-dashoffset: -1000;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
 }
