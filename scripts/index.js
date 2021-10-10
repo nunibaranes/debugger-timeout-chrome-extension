@@ -1,8 +1,15 @@
+const LANDING = "landing";
 const HIDDEN = "hidden";
 const DISABLED = "disabled";
 const RERUN = "rerun";
 const DONE = "done";
 const ACTIVE = "active";
+
+const objRef = document.body
+
+if (objRef.id === LANDING) {
+  return;
+}
 
 const rootStyles = document.documentElement.style;
 const timeFormField = document.querySelector("#time-form-field");
