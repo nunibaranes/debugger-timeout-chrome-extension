@@ -1,64 +1,60 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="./styles/popup-styles.css" />
-    <link rel="stylesheet" href="./styles/progress-bar-styles.css" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div class="container">
-      <header class="header">
-        <h1 class="title">Debugger Timeout</h1>
-        <p class="description">The best extension to set a timed debugger to web Inspect hard to grab elements</p>
-      </header>
-      <main class="main">
-        <form class="form">
-          <div class="time">
-            <div id="circle-progress">
-              <svg height="200" width="200">
-                <circle
-                  class="circle"
-                  cx="100"
-                  cy="100"
-                  r="95"
-                  stroke="currentColor"
-                  stroke-width="10"
-                  fill-opacity="0"
-                />
-              </svg>
-            </div>
-            <div id="time-form-field" class="time-form-field">
-              <label class="time-field-label" for="time-field">Choose a number between 1-10:</label>
-              <div class="time-controls">
-                <button class="button text time-controls step-down">-</button>
-                <input type="number" min="1" max="10" class="time-field" id="time-field" value="1" maxlength="2" />
-                <button class="button text time-controls step-up">+</button>
-              </div>
-            </div>
-            <div id="time-preview" class="time-preview hidden">
-              <button id="rerun" class="button text seconds rerun hidden" title="Run debugger again">
-                <i class="fa fa-refresh"></i>
-              </button>
-              <div class="seconds-timer" id="seconds-timer"><span id="seconds" class="seconds"></span> seconds</div>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="./styles/global.css" />
+  <link rel="stylesheet" href="./styles/popup-styles.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+  <div class="container">
+    <header class="header">
+      <h1 class="title">Debugger Timeout</h1>
+      <p class="description">The best extension to set a timed debugger to inspect hard-to-grab elements on web pages
+      </p>
+    </header>
+    <main class="main">
+      <form class="form">
+        <div class="time">
+          <div id="circle-progress">
+            <svg height="200" width="200">
+              <circle class="circle" cx="100" cy="100" r="95" stroke="currentColor" stroke-width="10"
+                fill-opacity="0" />
+            </svg>
+          </div>
+          <div id="time-form-field" class="time-form-field">
+            <label class="time-field-label" for="time-field">Choose a number between 1-10:</label>
+            <div class="time-controls">
+              <button class="button text time-controls step-down">-</button>
+              <input type="number" min="1" max="10" class="time-field" id="time-field" value="1" maxlength="2" />
+              <button class="button text time-controls step-up">+</button>
             </div>
           </div>
-          <div class="actions">
-            <button id="submit" class="button">Run Debugger</button>
-            <button id="reset" class="button secondary hidden disabled">Reset</button>
+          <div id="time-preview" class="time-preview hidden">
+            <button id="rerun" class="button text seconds rerun hidden" title="Run debugger again">
+              <i class="fa fa-refresh"></i>
+            </button>
+            <div class="seconds-timer" id="seconds-timer"><span id="seconds" class="seconds"></span> seconds</div>
           </div>
-        </form>
-      </main>
-      <footer class="footer">
-        <a class="github" href="https://github.com/nunibaranes" target="_blank">Nunibaranes</a>
-      </footer>
-    </div>
-  </body>
-  <script src="./scripts/index.js"></script>
+        </div>
+        <div class="actions">
+          <button id="submit" class="button">Run Debugger</button>
+          <button id="reset" class="button secondary hidden disabled">Reset</button>
+        </div>
+      </form>
+    </main>
+    <footer class="footer">
+      <a class="github" href="https://github.com/nunibaranes" target="_blank">Nunibaranes</a>
+    </footer>
+  </div>
+</body>
+<script src="./scripts/index.js"></script>
+
 </html>

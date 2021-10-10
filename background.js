@@ -2,7 +2,7 @@
 chrome.runtime.onInstalled.addListener((response) => {
   if (response.reason === "install") {
     chrome.tabs.create({
-      url: "popup.html",
+      url: "landing.html",
     });
   }
 });

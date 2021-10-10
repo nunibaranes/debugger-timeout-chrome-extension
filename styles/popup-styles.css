@@ -1,34 +1,3 @@
-:root {
-  --white: #fff;
-  --black: #000;
-  --blueLight: #8ecae6;
-  --blueDark: #219ebc;
-  --blueVeryDark: #023047;
-  --orangeLight: #ffb703;
-  --orangeDark: #fb8500;
-  --HeadingFont: "Fjalla One", sans-serif;
-  --textFont: "Roboto", sans-serif;
-  --progress-bar-transition-length: 1s;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-body {
-  width: 100%;
-  height: 100%;
-}
-
 .container {
   height: 400px;
   width: 300px;
