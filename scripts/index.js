@@ -153,9 +153,9 @@ function runDebugger() {
   chrome.storage.sync.set({ options });
   chrome.runtime.sendMessage({ message: "runDebugger" });
 
+  setProgressCircle(true, parseInt(inputTime.value));
   hideRerun();
   setGlobals(options);
-  setProgressCircle(true, parseInt(inputTime.value));
   startCountdown(parseInt(inputTime.value));
 }
 
