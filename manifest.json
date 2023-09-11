@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "Debugger Timeout",
   "description": "The best extension to set a timed debugger to inspect hard-to-grab elements on web pages",
   "action": {
