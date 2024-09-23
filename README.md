@@ -17,7 +17,7 @@ The best extension to set a timed debugger to web Inspect hard to grab elements
 - Milliseconds / Seconds Toggle
 - Keyboard shortcut - settings
 - Open devtools programmatically
-- 
+  
 ## License
 This project is licensed under the MIT License - see the [LICENSE](./LICENSE.txt) file for details.
 
