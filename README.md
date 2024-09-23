@@ -18,9 +18,6 @@ The best extension to set a timed debugger to web Inspect hard to grab elements
 - Keyboard shortcut - settings
 - Open devtools programmatically
 
-## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## Authors
 
 - **Nofar Baranes** - [nunibaranes](https://github.com/nunibaranes)
