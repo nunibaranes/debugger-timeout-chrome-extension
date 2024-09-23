@@ -28,7 +28,7 @@ Capturing elements that are influenced by DOM events can be frustrating. **Debug
    - Click the “Run Debugger” button to start the timer. Once activated, your application will freeze for the specified duration, enabling you to inspect the desired elements in their current state.
 
 
-<img src="./images/landing.png" width="500" /> 
+<img src="./images/landing.png" width="900" /> 
 
 ### Use Cases
 - **Drag-and-Drop Components:** Easily inspect elements during drag-and-drop actions.
@@ -41,7 +41,7 @@ Capturing elements that are influenced by DOM events can be frustrating. **Debug
 - Context menu options
 - Milliseconds / Seconds Toggle
 - Keyboard shortcut - settings
-- Open devtools programmatically
+- Open DevTools programmatically
 
 ### Support
 If you encounter any issues or have questions about the Debugger Timeout extension, please open an issue on the [GitHub repository](https://github.com/nunibaranes/debugger-timeout-chrome-extension/issues).
